@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 abstract public class Vehicle {
+    protected VehicleStatus status;
     protected String id;
     private String name;
     private float currentFuel;
@@ -25,7 +26,7 @@ abstract public class Vehicle {
     //check the container's type
     public abstract boolean canCarried(Container container);
 
-    //boolean shows true for successful load, false for unsuccessful
+    //boolean shows true for successful carry container, false for unsuccessful
     public boolean loadContainer(Container container) {
         if (canCarried(container)&& !containers.contains(container)) {
             containers.add(container);
@@ -36,16 +37,38 @@ abstract public class Vehicle {
         }
     }
 
-    public abstract String genID();
-
-    //boolean shows true for successful unload, false for unsuccessful
+    //boolean shows true for successfully unload containers from vehicle
     public boolean unloadContainer(Container container) {
-            if (containers.remove(container)) {
-                this.numCons = containers.size();
-                return true;
-            }
+        if ( containers.contains(container)) {
+            containers.remove(container);
+            this.numCons = containers.size();
+            return true;
+        }else {
             return false;
+        }
     }
+
+    //Load container from port to vehicle --> the containers in port
+    // will increase and in vehicle will decrease
+    public boolean exportCon(Port p, Container c){
+        if(!containers.contains(c)) return false;
+        if(this.currentPort != p) return false;
+        containers.remove(c);
+        this.numCons = containers.size();
+            return p.loadCon(c);
+    }
+    //Load container from vehicle to port ---> the containers in vehicle
+    // will increase and in port will decrease
+    public boolean importCon(Port p, Container c){
+        if(p.getContainers().contains(c)) return false;
+        if(containers.contains(c)) return false;
+        containers.add(c);
+        this.numCons = containers.size();
+            return p.unloadCon(c);
+        }
+
+
+    public abstract String genID();
 
     public ArrayList<Container> getContainers() {
         return containers;
@@ -55,4 +78,32 @@ abstract public class Vehicle {
         this.currentPort = port;
     }
 
+    public Port getCurrentPort() {
+        return currentPort;
+    }
+    //Check if the vehicle is not in port
+    public boolean isTransit(){
+        return status == VehicleStatus.IN_TRANSIT;
+    }
+    //Check if the vehicle is in port
+    public boolean isAtPort(){
+        return status == VehicleStatus.AT_PORT;
+    }
+
+    @Override
+    public String toString() {
+        String portInfo = (currentPort == null)
+                ? "null"
+                : currentPort.getId() + " (" + currentPort.getName() + ")";
+
+        return "Vehicle{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", currentFuel=" + currentFuel +
+                ", carryingCap=" + carryingCap +
+                ", fuelCap=" + fuelCap +
+                ", currentPort=" + portInfo +
+                ", containersCount=" + (containers == null ? 0 : containers.size()) +
+                '}';
+    }
 }
