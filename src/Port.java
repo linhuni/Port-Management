@@ -80,4 +80,42 @@ public class Port {
     public String getId() {
         return id;
     }
+
+    public ArrayList<Vehicle> getVehiclesAtPort() {
+        return vehiclesAtPort;
+    }
+    public boolean addVehicle(Vehicle v) {
+
+        if (v == null) return false;
+        if (v.isTransit()) return false;
+        if (v.getCurrentPort() != this) return false;
+
+        if (vehiclesAtPort.contains(v)) return false;
+
+        vehiclesAtPort.add(v);
+        return true;
+    }
+    //add container to containers
+    public boolean loadCon(Container c){
+        return containers.add(c);
+    }
+    //remove container from containers
+    public boolean unloadCon(Container c){
+        return containers.remove(c);
+    }
+
+    @Override
+    public String toString() {
+        return "Port{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", storingCap=" + stroringCap +
+                ", landing=" + landing +
+                ", containersCount=" + (containers == null ? 0 : containers.size()) +
+                ", tripsCount=" + (trips == null ? 0 : trips.size()) +
+                ", vehiclesAtPortCount=" + (vehiclesAtPort == null ? 0 : vehiclesAtPort.size()) +
+                '}';
+    }
 }
