@@ -9,8 +9,8 @@ abstract public class Vehicle {
     private int carryingCap;
     private float fuelCap;
     private Port currentPort;
-    private int numCons;
-    private ArrayList<Container> containers ;
+    protected int numCons;
+    protected ArrayList<Container> containers ;
 
     public Vehicle(String name, float currentFuel, int carryingCap, float fuelCap, Port currentPort,
                    ArrayList<Container> containers) {
