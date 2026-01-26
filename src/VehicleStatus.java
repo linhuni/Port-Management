@@ -1,2 +1,4 @@
-package PACKAGE_NAME;public class vehicleStatus {
+public enum VehicleStatus {
+    AT_PORT,
+    IN_TRANSIT
 }
