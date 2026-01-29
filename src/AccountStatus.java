@@ -1,4 +1,2 @@
-public enum AccountStatus {
-    USER,
-    ADMIN
+package PACKAGE_NAME;public class AccountStatus {
 }
