@@ -1,2 +1,5 @@
-package PACKAGE_NAME;public class AccountStatus {
+public enum AccountStatus {
+    ACTIVE,
+    PENDING,
+    BLOCKED
 }
